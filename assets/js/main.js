@@ -7,7 +7,7 @@ let offset = 0;
 
 function convertPokemonToLi(pokemon) {
     return `
-        <li class="pokemon ${pokemon.type}">
+        <li class="pokemon ${pokemon.type}" onCLick="selectPokemon(${pokemon.number})">
             <span class="number">#${pokemon.number}</span>
             <span class="name">${pokemon.name}</span>
 
@@ -23,12 +23,28 @@ function convertPokemonToLi(pokemon) {
     `
 }
 
+const selectPokemon = async (id) =>{
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`
+    const res = await fetch(url)
+    const pokemon = await res.json()
+    displayPopup(pokemon)
+}
+
+const displayPopup = (pokemon) =>{
+    const type = pokemon.types.map((type)=>
+    type.type.name).join(", ")
+    console.log(type)
+
+}
+
 function loadPokemonItens(offset, limit) {
     pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
         const newHtml = pokemons.map(convertPokemonToLi).join('')
         pokemonList.innerHTML += newHtml
     })
+    
 }
+
 
 loadPokemonItens(offset, limit)
 
@@ -44,4 +60,7 @@ loadMoreButton.addEventListener('click', () => {
     } else {
         loadPokemonItens(offset, limit)
     }
+
+ 
 })
+
