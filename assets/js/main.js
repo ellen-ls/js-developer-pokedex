@@ -33,15 +33,11 @@ const selectPokemon = async (id) => {
 const displayPopup = (pokemon) => {
 
     const imagem = pokemon.sprites.other.dream_world.front_default
-    const stats = pokemon.stats.map((base_stats) => base_stats.base_stat).join(' ')
-    const name_stats = pokemon.stats.map((name_stat) => name_stat.stat.name).join(' ')
     const types = pokemon.types.map((typeSlot) => typeSlot.type.name)
     const [type] = types
 
     pokemon.types = types
     pokemon.type = type
-
-
 
     const htmlString = `
     <div class = "popup"> 
@@ -54,25 +50,23 @@ const displayPopup = (pokemon) => {
     <ol class="types">
         ${pokemon.types.map((type) => `<li class="type ${type}">${type}</li>`).join('')}
     </ol>
-
-    
 </div>
     <img id="pokemon-img" src="${imagem}"
              alt="${pokemon.name}">
              <div id="data">
              <h4>Base stats</h4>
              <div id="stats">
-             <div class="bar-inner">${name_stats}</div>
-             <div class="stat-desc">${stats}</div>
-          
+             <div class="bar-inner">${pokemon.stats.map((name_stats)=>`<p class="${type}">${name_stats.stat.name}</p>`).join('')}</div>
+             <div class="stat-desc">${pokemon.stats.map((base_stats)=>`<p class="${type}">${base_stats.base_stat}</p>`).join('')}</div>
+               
    </div>
-
-   
+   <div class="stats-hw">
+   <p class="${type}">Height:${(pokemon.height/10).toFixed(2)} m</p>
+   <p class="${type}">Weight:${(pokemon.weight/10)} kg</p>
+   <div>
 </li>
     <button id="closeBtn" onClick="closePopup()">Close</button>
-    
-    
-  
+
     </div>
   </div>
 </div>
